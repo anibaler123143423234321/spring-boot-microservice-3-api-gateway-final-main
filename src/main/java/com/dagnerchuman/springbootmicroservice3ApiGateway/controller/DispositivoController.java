@@ -6,6 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/gateway/dispositivo")
 @CrossOrigin(origins = "http://api-gateway:5200")
@@ -45,6 +48,22 @@ public class DispositivoController {
             // Manejo de excepciones, puedes personalizar según tus necesidades
             e.printStackTrace();
             return new ResponseEntity<>("Error al enviar la notificación.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // Obtener todos los dispositivos
+    @GetMapping("/getAllDevices")
+    public ResponseEntity<List<Object>> getAllDevices() {
+        try {
+            // Llama al servicio de dispositivos a través de FeignClient
+            List<Object> dispositivos = dispositivoServiceRequest.getAllDevices();
+
+            // Retorno de ejemplo (ajústalo según tus necesidades)
+            return new ResponseEntity<>(dispositivos, HttpStatus.OK);
+        } catch (Exception e) {
+            // Manejo de excepciones, puedes personalizar según tus necesidades
+            e.printStackTrace();
+            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
