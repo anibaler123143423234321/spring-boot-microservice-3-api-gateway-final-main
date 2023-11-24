@@ -3,6 +3,7 @@ package com.dagnerchuman.springbootmicroservice3ApiGateway.controller;
 import com.dagnerchuman.springbootmicroservice3ApiGateway.model.Role;
 import com.dagnerchuman.springbootmicroservice3ApiGateway.model.User;
 import com.dagnerchuman.springbootmicroservice3ApiGateway.security.UserPrincipal;
+import com.dagnerchuman.springbootmicroservice3ApiGateway.service.DatabaseService;
 import com.dagnerchuman.springbootmicroservice3ApiGateway.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,10 +19,19 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
-
-
-    public UserController(UserService userService) {
+    private final DatabaseService databaseService;
+    @PostMapping("/make-column-nullable")
+    public String makeColumnNullable() {
+        try {
+            databaseService.makeColumnNullable("users", "dispositivo");
+            return "Columna 'dispositivo' cambiada a nullable exitosamente.";
+        } catch (Exception e) {
+            return "Error al cambiar la columna 'dispositivo' a nullable: " + e.getMessage();
+        }
+    }
+    public UserController(UserService userService, DatabaseService databaseService) {
         this.userService = userService;
+        this.databaseService = databaseService;
     }
 
 
