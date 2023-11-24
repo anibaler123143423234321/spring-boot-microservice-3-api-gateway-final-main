@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.*;
         configuration = FeignConfiguration.class)
 public interface DispositivoServiceRequest {
 
-    @PostMapping("/api/dispositivo/saveDevice")
+    @PostMapping("/saveDevice")
     Object saveDevice(@RequestBody Object dispositivo);
 
-    @PostMapping("/api/dispositivo/sendNotification/{deviceId}")
+    @PostMapping("/sendNotification/{deviceId}")
     void sendNotification(@PathVariable("deviceId") int deviceId, @RequestBody Object notification);
 }
