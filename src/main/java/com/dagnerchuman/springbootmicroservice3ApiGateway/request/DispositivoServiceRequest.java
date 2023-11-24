@@ -14,9 +14,9 @@ import java.util.List;
 
 public interface DispositivoServiceRequest {
 
-    @PostMapping("/api/dispositivo/saveDevice")
+    @PostMapping("/saveDevice")
     Object saveDevice(@RequestBody Object dispositivo);
 
-    @PostMapping("/api/dispositivo/sendNotification/{deviceId}")
+    @PostMapping("/sendNotification/{deviceId}")
     Object sendNotification(@PathVariable("deviceId") int deviceId, @RequestBody Object notification);
 }
