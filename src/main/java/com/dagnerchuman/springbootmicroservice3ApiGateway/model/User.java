@@ -65,6 +65,6 @@ public class User {
     @Column(name="distrito", nullable = false)
     private String distrito;
 
-    @Column(name = "dispositivo", nullable = false)
+    @Column(name = "dispositivo", nullable = true)
     private String dispositivoId;
 }
