@@ -18,4 +18,7 @@ public interface DispositivoServiceRequest {
 
     @GetMapping("/getAllDevices")
     List<Object> getAllDevices();
+
+    @PostMapping("/sendNotification")
+    void sendNotificationToAll(@RequestBody Object notification);
 }

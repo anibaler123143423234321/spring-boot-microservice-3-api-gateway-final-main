@@ -79,8 +79,9 @@ public class SecurityConfig{
                 .antMatchers(HttpMethod.PUT, "/gateway/producto/{productoId}").hasAnyRole(Role.USER.name(),Role.ADMIN.name(), Role.SUPERADMIN.name())
                 .antMatchers(HttpMethod.GET, "/gateway/categoria").hasAnyRole(Role.USER.name(),Role.ADMIN.name(), Role.SUPERADMIN.name())
 
-                .antMatchers(HttpMethod.POST, "/api/gateway/dispositivo/{deviceId}").hasAnyRole(Role.USER.name(),Role.ADMIN.name(), Role.SUPERADMIN.name())
+                .antMatchers(HttpMethod.POST, "/api/gateway/dispositivo/sendNotification/{deviceId}").hasAnyRole(Role.USER.name(),Role.ADMIN.name(), Role.SUPERADMIN.name())
                 .antMatchers(HttpMethod.GET, "/api/gateway/dispositivo/getAllDevices").hasAnyRole(Role.USER.name(),Role.ADMIN.name(), Role.SUPERADMIN.name())
+                .antMatchers(HttpMethod.POST, "/api/gateway/dispositivo/sendNotification").hasAnyRole(Role.USER.name(),Role.ADMIN.name(), Role.SUPERADMIN.name())
 
 
                 .antMatchers("/gateway/producto/**").hasAnyRole(Role.ADMIN.name(), Role.SUPERADMIN.name())

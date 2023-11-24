@@ -66,4 +66,22 @@ public class DispositivoController {
             return new ResponseEntity<>(Collections.emptyList(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    // Enviar notificación a todos los dispositivos
+    @PostMapping("/sendNotification")
+    public ResponseEntity<String> sendNotification(@RequestBody Object notification) {
+        try {
+            // Llama al servicio de dispositivos a través de FeignClient
+            dispositivoServiceRequest.sendNotificationToAll(notification);
+
+            // Retorno de ejemplo (ajústalo según tus necesidades)
+            return new ResponseEntity<>("Notificaciones enviadas correctamente.", HttpStatus.OK);
+        } catch (Exception e) {
+            // Manejo de excepciones, puedes personalizar según tus necesidades
+            e.printStackTrace();
+            return new ResponseEntity<>("Error al enviar las notificaciones.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 }
