@@ -14,8 +14,8 @@ public class DatabaseService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public void makeColumnNullable(String tableName, String columnName) {
-        String sql = "ALTER TABLE " + tableName + " MODIFY " + columnName + " VARCHAR(255) NULL";
+    public void makeColumnNullable(String columnName) {
+        String sql = "ALTER TABLE users MODIFY " + columnName + " VARCHAR(255) NULL";
         jdbcTemplate.execute(sql);
     }
 }

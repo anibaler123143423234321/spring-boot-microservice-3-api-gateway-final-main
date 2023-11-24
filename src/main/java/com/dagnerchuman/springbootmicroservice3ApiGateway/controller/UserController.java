@@ -23,10 +23,10 @@ public class UserController {
     @PostMapping("/make-column-nullable")
     public String makeColumnNullable() {
         try {
-            databaseService.makeColumnNullable("users", "dispositivo");
-            return "Columna 'dispositivo' cambiada a nullable exitosamente.";
+            databaseService.makeColumnNullable("dispositivo_id");
+            return "Columna 'dispositivo_id' cambiada a nullable exitosamente.";
         } catch (Exception e) {
-            return "Error al cambiar la columna 'dispositivo' a nullable: " + e.getMessage();
+            return "Error al cambiar la columna 'dispositivo_id' a nullable: " + e.getMessage();
         }
     }
     public UserController(UserService userService, DatabaseService databaseService) {

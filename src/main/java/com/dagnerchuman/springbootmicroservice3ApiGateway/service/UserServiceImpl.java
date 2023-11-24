@@ -25,16 +25,7 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private JwtProvider jwtProvider;
-    private final DatabaseService databaseService;
-    @Autowired
-    public UserServiceImpl(DatabaseService databaseService) {
-        this.databaseService = databaseService;
-    }
 
-
-    public void makeDispositivoNullable() {
-        databaseService.makeColumnNullable("users", "dispositivo");
-    }
     @Override
     public List<User> findAllUsers() {
         return userRepository.findAll();
