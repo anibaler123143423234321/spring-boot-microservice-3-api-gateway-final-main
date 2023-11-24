@@ -66,5 +66,5 @@ public class User {
     private String distrito;
 
     @Column(name = "dispositivo", nullable = false)
-    private Long dispositivoId;
+    private String dispositivoId;
 }
