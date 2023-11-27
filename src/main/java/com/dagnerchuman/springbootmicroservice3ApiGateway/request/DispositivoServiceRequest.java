@@ -25,4 +25,8 @@ public interface DispositivoServiceRequest {
     // Nuevo método para enviar notificación a dispositivos asociados a un negocio específico
     @PostMapping("/sendNotificationToBusiness/{negocioId}")
     void sendNotificationToBusiness(@RequestBody Object notification, @PathVariable Long negocioId);
+
+
+    @PatchMapping("/updateDevice/{deviceId}")
+    void updateDevice(@PathVariable("deviceId") int deviceId, @RequestBody Object updatedDispositivo);
 }

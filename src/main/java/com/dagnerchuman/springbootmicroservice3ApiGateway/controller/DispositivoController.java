@@ -100,4 +100,24 @@ public class DispositivoController {
             return new ResponseEntity<>("Error al enviar las notificaciones.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
+    // Método para actualizar un dispositivo
+    @PatchMapping("/updateDevice/{deviceId}")
+    public ResponseEntity<String> updateDevice(
+            @PathVariable int deviceId,
+            @RequestBody Object updatedDispositivo) {
+        try {
+            // Llama al servicio de dispositivos a través de FeignClient para actualizar el dispositivo
+            dispositivoServiceRequest.updateDevice(deviceId, updatedDispositivo);
+
+            // Retorno de ejemplo (ajústalo según tus necesidades)
+            return new ResponseEntity<>("Dispositivo actualizado correctamente.", HttpStatus.OK);
+        } catch (Exception e) {
+            // Manejo de excepciones, puedes personalizar según tus necesidades
+            e.printStackTrace();
+            return new ResponseEntity<>("Error al actualizar el dispositivo.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
