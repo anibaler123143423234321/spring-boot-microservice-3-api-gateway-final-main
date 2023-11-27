@@ -70,6 +70,7 @@ public class SecurityConfig{
 
                 .antMatchers(HttpMethod.POST, "/api/user/{id}}").hasAnyRole(Role.SUPERADMIN.name())
                 .antMatchers(HttpMethod.DELETE, "/api/user/{id}").hasAnyRole(Role.USER.name(),Role.ADMIN.name(), Role.SUPERADMIN.name())
+                .antMatchers(HttpMethod.PUT, "/api/user/{id}").hasAnyRole(Role.USER.name(),Role.ADMIN.name(), Role.SUPERADMIN.name())
 
                 .antMatchers(HttpMethod.GET, "/gateway/producto/pornegocio/{negocioId}").hasAnyRole(Role.USER.name(),Role.ADMIN.name(), Role.SUPERADMIN.name())
                 .antMatchers(HttpMethod.GET, "/gateway/producto/porcategoria/{categoriaId}").hasAnyRole(Role.USER.name(),Role.ADMIN.name(), Role.SUPERADMIN.name())

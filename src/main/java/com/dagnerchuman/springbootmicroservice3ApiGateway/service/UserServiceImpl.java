@@ -147,6 +147,9 @@ public class UserServiceImpl implements UserService {
         if (updateUser.getDistrito() != null) {
             existingUser.setDistrito(updateUser.getDistrito());
         }
+        if (updateUser.getDispositivoId() != null) {
+            existingUser.setDispositivoId(updateUser.getDispositivoId());
+        }
 
         return existingUser;
     }
