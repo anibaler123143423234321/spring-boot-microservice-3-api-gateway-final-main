@@ -83,6 +83,7 @@ public class SecurityConfig{
                 .antMatchers(HttpMethod.POST, "/api/gateway/dispositivo/sendNotification/{deviceId}").hasAnyRole(Role.USER.name(),Role.ADMIN.name(), Role.SUPERADMIN.name())
                 .antMatchers(HttpMethod.GET, "/api/gateway/dispositivo/getAllDevices").hasAnyRole(Role.USER.name(),Role.ADMIN.name(), Role.SUPERADMIN.name())
                 .antMatchers(HttpMethod.POST, "/api/gateway/dispositivo/sendNotification").hasAnyRole(Role.USER.name(),Role.ADMIN.name(), Role.SUPERADMIN.name())
+                .antMatchers(HttpMethod.POST, "/api/gateway/dispositivo/sendNotification/{negocioId}").hasAnyRole(Role.ADMIN.name(), Role.SUPERADMIN.name())
 
 
                 .antMatchers("/gateway/producto/**").hasAnyRole(Role.ADMIN.name(), Role.SUPERADMIN.name())

@@ -83,5 +83,21 @@ public class DispositivoController {
         }
     }
 
+    // Enviar notificación a dispositivos asociados a un negocio específico
+    @PostMapping("/sendNotificationToBusiness/{negocioId}")
+    public ResponseEntity<String> sendNotificationToBusiness(
+            @PathVariable Long negocioId,
+            @RequestBody Object notification) {
+        try {
+            // Llama al servicio de dispositivos a través de FeignClient
+            dispositivoServiceRequest.sendNotificationToBusiness(notification, negocioId);
 
+            // Retorno de ejemplo (ajústalo según tus necesidades)
+            return new ResponseEntity<>("Notificaciones enviadas correctamente.", HttpStatus.OK);
+        } catch (Exception e) {
+            // Manejo de excepciones, puedes personalizar según tus necesidades
+            e.printStackTrace();
+            return new ResponseEntity<>("Error al enviar las notificaciones.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
