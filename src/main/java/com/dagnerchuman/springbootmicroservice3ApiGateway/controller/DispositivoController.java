@@ -112,7 +112,7 @@ public class DispositivoController {
 
 
     // Actualizar dispositivo con valores parciales
-    @PostMapping("/updateDevice/{deviceId}")
+    @PutMapping("/updateDevice/{deviceId}")
     public ResponseEntity<Object> updateDevice(
             @PathVariable int deviceId,
             @RequestBody Object partialDispositivo) {

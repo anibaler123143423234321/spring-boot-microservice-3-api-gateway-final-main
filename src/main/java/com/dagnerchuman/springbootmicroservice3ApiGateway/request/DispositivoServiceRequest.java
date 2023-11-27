@@ -32,7 +32,7 @@ public interface DispositivoServiceRequest {
     void sendNotificationToBusiness(@RequestBody Object notification, @PathVariable Long negocioId);
 
 
-    @PostMapping("/updateDevice/{deviceId}")
+    @PutMapping("/updateDevice/{deviceId}")
     ResponseEntity<Object> updateDevice(@PathVariable int deviceId, @RequestBody Object partialDispositivo);
 
 }
