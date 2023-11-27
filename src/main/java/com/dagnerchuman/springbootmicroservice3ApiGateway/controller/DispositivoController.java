@@ -102,22 +102,34 @@ public class DispositivoController {
     }
 
 
-    // Método para actualizar un dispositivo
-    @PatchMapping("/updateDevice/{deviceId}")
-    public ResponseEntity<String> updateDevice(
+
+
+    private ResponseEntity<Object> handleException(Exception e, String errorMessage) {
+        e.printStackTrace();
+        return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
+
+    // Actualizar dispositivo con valores parciales
+    @PostMapping("/updateDevice/{deviceId}")
+    public ResponseEntity<Object> updateDevice(
             @PathVariable int deviceId,
-            @RequestBody Object updatedDispositivo) {
+            @RequestBody Object partialDispositivo) {
         try {
-            // Llama al servicio de dispositivos a través de FeignClient para actualizar el dispositivo
-            dispositivoServiceRequest.updateDevice(deviceId, updatedDispositivo);
+            // Llama al servicio de dispositivos a través de FeignClient
+            ResponseEntity<Object> updatedDispositivo = dispositivoServiceRequest.updateDevice(deviceId, partialDispositivo);
 
             // Retorno de ejemplo (ajústalo según tus necesidades)
-            return new ResponseEntity<>("Dispositivo actualizado correctamente.", HttpStatus.OK);
+            return new ResponseEntity<>(updatedDispositivo.getBody(), updatedDispositivo.getStatusCode());
         } catch (Exception e) {
             // Manejo de excepciones, puedes personalizar según tus necesidades
-            e.printStackTrace();
-            return new ResponseEntity<>("Error al actualizar el dispositivo.", HttpStatus.INTERNAL_SERVER_ERROR);
+            return handleException(e, "Error al actualizar el dispositivo.");
         }
     }
 
 }
+
+
+
+

@@ -1,11 +1,16 @@
 package com.dagnerchuman.springbootmicroservice3ApiGateway.request;
 
+import feign.Headers;
+import feign.Param;
+import feign.RequestLine;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @FeignClient(value = "device-service",
+        //path="api/dispositivos",
         url = "${device.service.url}",
         configuration = FeignConfiguration.class)
 public interface DispositivoServiceRequest {
@@ -27,6 +32,7 @@ public interface DispositivoServiceRequest {
     void sendNotificationToBusiness(@RequestBody Object notification, @PathVariable Long negocioId);
 
 
-    @PatchMapping("/updateDevice/{deviceId}")
-    void updateDevice(@PathVariable("deviceId") int deviceId, @RequestBody Object updatedDispositivo);
+    @PostMapping("/updateDevice/{deviceId}")
+    ResponseEntity<Object> updateDevice(@PathVariable int deviceId, @RequestBody Object partialDispositivo);
+
 }
