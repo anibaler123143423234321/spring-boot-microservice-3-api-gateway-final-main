@@ -32,6 +32,7 @@ public class EmailService {
     @Value("${mail.urlFront}")
     private String urlFront;
 
+    /*
     public void sendEmail() {
         try {
             // Enable debugging for the mail session
@@ -59,14 +60,16 @@ public class EmailService {
         }
     }
 
-    public void sendEmailTemplate(EmailValuesDto dto) {
+    */
+
+    public void sendEmail(EmailValuesDto dto) {
 
         MimeMessage message = javaMailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             Context context = new Context();
             Map<String, Object> model = new HashMap<>();
-            model.put("username", dto.getUsername());
+            model.put("username", dto.getUserName());
             model.put("url",urlFront + dto.getTokenPassword());
             context.setVariables(model);
             String htmlText = templateEngine.process("email-template",context);

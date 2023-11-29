@@ -35,7 +35,6 @@ public interface UserService {
 
     Optional<User> getdByUsernameOrEmail(String nombreOrEmail);
 
-    Optional<User> getdByTokenPassword(String tokenPassword);
 
     UserDetails loadUserByUsername(String nombreOrEmail) throws UsernameNotFoundException;
 

@@ -171,10 +171,9 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUsernameOrEmail(nombreOrEmail, nombreOrEmail);
     }
 
-    @Override
-    public Optional<User> getdByTokenPassword(String tokenPassword)
-    {
-        return userRepository.findByTokenPassword(tokenPassword);
+    public void updateTokenPassword(User user, String newTokenPassword) {
+        user.setTokenPassword(newTokenPassword);
+        userRepository.save(user);
     }
 
     @Override

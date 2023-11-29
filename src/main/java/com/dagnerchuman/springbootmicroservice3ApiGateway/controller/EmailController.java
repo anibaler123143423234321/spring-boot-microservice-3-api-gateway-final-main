@@ -36,13 +36,13 @@ public class EmailController {
 
     private static final String subject = "Cambio de contraseña";
 
-
+/*
     @GetMapping("/send")
     public ResponseEntity<?> sendEmail(){
         emailService.sendEmail();
         return new ResponseEntity("Correo enviado con exito", HttpStatus.OK);
     }
-
+*/
     @PostMapping("/send-html")
     public ResponseEntity<?> sendEmailTemplate(@RequestBody EmailValuesDto dto){
         Optional<User> userOpt = userService.getdByUsernameOrEmail(dto.getMailTo());
@@ -53,13 +53,13 @@ public class EmailController {
         dto.setMailFrom(mailFrom);
         dto.setMailTo(user.getEmail());
         dto.setSubject(subject);
-        dto.setUsername(user.getUsername());
+        dto.setUserName(user.getUsername());
         UUID uuid = UUID.randomUUID();
         String tokenPassword = uuid.toString();
         dto.setTokenPassword(tokenPassword);
         user.setTokenPassword(tokenPassword);
-        userService.saveUser(user);
-        emailService.sendEmailTemplate(dto);
+        userService.updateTokenPassword(user, user.getTokenPassword());
+        emailService.sendEmail(dto);
         return new ResponseEntity(new Mensaje("Correo con plantilla enviado con exito"), HttpStatus.OK);
     }
 
@@ -84,7 +84,7 @@ public class EmailController {
         String newPassword = passwordEncoder.encode(dto.getPassword());
         user.setPassword(newPassword);
         user.setTokenPassword(null);
-        userService.saveUser(user);
+        userService.updateTokenPassword(user, user.getTokenPassword());
 
         return new ResponseEntity<>(new Mensaje("Contraseña actualizada"), HttpStatus.OK);
     }

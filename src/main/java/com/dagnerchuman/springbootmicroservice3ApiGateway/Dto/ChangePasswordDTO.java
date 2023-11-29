@@ -1,10 +1,8 @@
 package com.dagnerchuman.springbootmicroservice3ApiGateway.Dto;
 
-import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 
-@Data
 public class ChangePasswordDTO {
 
     @NotBlank
@@ -23,4 +21,27 @@ public class ChangePasswordDTO {
         this.tokenPassword = tokenPassword;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
+    public String getTokenPassword() {
+        return tokenPassword;
+    }
+
+    public void setTokenPassword(String tokenPassword) {
+        this.tokenPassword = tokenPassword;
+    }
 }
