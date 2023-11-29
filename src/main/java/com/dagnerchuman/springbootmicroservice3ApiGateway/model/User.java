@@ -1,5 +1,6 @@
 package com.dagnerchuman.springbootmicroservice3ApiGateway.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -21,6 +22,11 @@ public class User {
 
     @Column(name="password", nullable = false)
     private String password;
+
+    @JsonProperty("tokenPassword")
+    @Column(name = "tokenPassword", nullable = true)
+    private String tokenPassword;
+
 
     @Column(name = "nombre", nullable = false)
     private String nombre;

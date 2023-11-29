@@ -5,10 +5,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import com.dagnerchuman.springbootmicroservice3ApiGateway.model.User;
+
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
@@ -17,8 +21,8 @@ import java.util.Set;
 public class UserPrincipal implements UserDetails {
     private Long id;
     private String username;
-    transient private String password;
-    transient private User user;
+    private String password;
+    private User user;
     private Set<GrantedAuthority> authorities;
 
     @Override
@@ -55,8 +59,17 @@ public class UserPrincipal implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    // Constructor que toma un User como parámetro
+    public UserPrincipal(User user) {
+        this.id = user.getId();
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+        this.user = user;
+        // Puedes inicializar authorities según los roles del usuario
+    }
+
+    public static UserPrincipal build(User user) {
+        return new UserPrincipal(user);
+    }
 }
-
-
-
-

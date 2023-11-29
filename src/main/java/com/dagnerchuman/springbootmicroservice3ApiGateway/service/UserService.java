@@ -2,6 +2,8 @@ package com.dagnerchuman.springbootmicroservice3ApiGateway.service;
 
 import com.dagnerchuman.springbootmicroservice3ApiGateway.model.Role;
 import com.dagnerchuman.springbootmicroservice3ApiGateway.model.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,4 +32,10 @@ public interface UserService {
     User updateUser(Long id, User user);
 
     void deleteUserById(Long id);
+
+    Optional<User> getdByUsernameOrEmail(String nombreOrEmail);
+
+    Optional<User> getdByTokenPassword(String tokenPassword);
+
+    UserDetails loadUserByUsername(String nombreOrEmail) throws UsernameNotFoundException;
 }

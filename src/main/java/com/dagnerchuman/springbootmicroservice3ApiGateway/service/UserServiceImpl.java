@@ -5,9 +5,11 @@ import com.dagnerchuman.springbootmicroservice3ApiGateway.model.User;
 import com.dagnerchuman.springbootmicroservice3ApiGateway.repository.UserRepository;
 import com.dagnerchuman.springbootmicroservice3ApiGateway.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.dagnerchuman.springbootmicroservice3ApiGateway.security.UserPrincipal;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -25,6 +27,7 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private JwtProvider jwtProvider;
+
 
     @Override
     public List<User> findAllUsers() {
@@ -150,12 +153,38 @@ public class UserServiceImpl implements UserService {
         if (updateUser.getDispositivoId() != null) {
             existingUser.setDispositivoId(updateUser.getDispositivoId());
         }
-
+        if (updateUser.getTokenPassword() != null) {
+            existingUser.setTokenPassword(updateUser.getTokenPassword());
+        }
         return existingUser;
     }
 
     public void deleteUserById(Long userId) {
         userRepository.deleteById(userId);
+    }
+
+
+
+    @Override
+    public Optional<User> getdByUsernameOrEmail(String nombreOrEmail)
+    {
+        return userRepository.findByUsernameOrEmail(nombreOrEmail, nombreOrEmail);
+    }
+
+    @Override
+    public Optional<User> getdByTokenPassword(String tokenPassword)
+    {
+        return userRepository.findByTokenPassword(tokenPassword);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String nombreOrEmail) throws UsernameNotFoundException {
+        // Utiliza el método existente para buscar al usuario por nombre de usuario o correo electrónico
+        User usuario = userRepository.findByUsernameOrEmail(nombreOrEmail, nombreOrEmail)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con nombre de usuario o correo electrónico: " + nombreOrEmail));
+
+        // Devuelve un UserDetails construido a partir del usuario encontrado
+        return UserPrincipal.build(usuario);
     }
 
 }
