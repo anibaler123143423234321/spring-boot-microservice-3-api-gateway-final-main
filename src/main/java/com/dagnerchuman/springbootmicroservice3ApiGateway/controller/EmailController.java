@@ -40,14 +40,14 @@ public class EmailController {
     @GetMapping("/send")
     public ResponseEntity<?> sendEmail(){
         emailService.sendEmail();
-        return new ResponseEntity<>("Correo enviado con exito", HttpStatus.OK);
+        return new ResponseEntity("Correo enviado con exito", HttpStatus.OK);
     }
 
     @PostMapping("/send-html")
     public ResponseEntity<?> sendEmailTemplate(@RequestBody EmailValuesDto dto){
         Optional<User> userOpt = userService.getdByUsernameOrEmail(dto.getMailTo());
         if (!userOpt.isPresent())
-            return new ResponseEntity<>(new Mensaje("No existe ningun usuario con esas credenciales"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity(new Mensaje("No existe ningun usuario con esas credenciales"), HttpStatus.NOT_FOUND);
 
         User user = userOpt.get();
         dto.setMailFrom(mailFrom);
@@ -60,19 +60,26 @@ public class EmailController {
         user.setTokenPassword(tokenPassword);
         userService.saveUser(user);
         emailService.sendEmailTemplate(dto);
-        return new ResponseEntity<>(new Mensaje("Correo con plantilla enviado con exito"), HttpStatus.OK);
+        return new ResponseEntity(new Mensaje("Correo con plantilla enviado con exito"), HttpStatus.OK);
     }
 
 
+
     @PostMapping("/change-password")
-    public ResponseEntity<?> changePassword(@Valid @RequestBody ChangePasswordDTO dto, BindingResult bindingResult){
-        if (bindingResult.hasErrors())
+    public ResponseEntity<?> changePasswordByTokenPassword(
+            @Valid @RequestBody ChangePasswordDTO dto,
+            BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(new Mensaje("Campos mal puestos"), HttpStatus.BAD_REQUEST);
-        if (!dto.getPassword().equals(dto.getConfirmPassword()))
-            return new ResponseEntity<>(new Mensaje("Las contraseñas no coinciden "), HttpStatus.BAD_REQUEST);
-        Optional<User> userOpt = userService.getdByTokenPassword(dto.getTokenPassword());
-        if (!userOpt.isPresent())
-            return new ResponseEntity<>(new Mensaje("No existe ningun usuario con esas credenciales"), HttpStatus.NOT_FOUND);
+        }
+
+        // Buscar al usuario por tokenPassword
+        Optional<User> userOpt = userService.getByTokenPassword(dto.getTokenPassword());
+        if (!userOpt.isPresent()) {
+            return new ResponseEntity<>(new Mensaje("No existe ningún usuario con ese token"), HttpStatus.NOT_FOUND);
+        }
+
         User user = userOpt.get();
         String newPassword = passwordEncoder.encode(dto.getPassword());
         user.setPassword(newPassword);

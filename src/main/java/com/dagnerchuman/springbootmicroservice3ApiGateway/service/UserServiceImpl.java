@@ -187,4 +187,9 @@ public class UserServiceImpl implements UserService {
         return UserPrincipal.build(usuario);
     }
 
+    @Override
+    public Optional<User> getByTokenPassword(String tokenPassword) {
+        return userRepository.findByTokenPassword(tokenPassword);
+    }
+
 }
