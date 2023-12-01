@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -109,8 +110,14 @@ public class UserController {
 
 
     @PostMapping("/schedule-delete")
-    public ResponseEntity<?> scheduleDelete(@RequestParam String username) {
-        Optional<User> userOpt = userService.findByUsername(username);
+    public ResponseEntity<?> scheduleDelete(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
+
+        if (email == null || email.isEmpty()) {
+            return new ResponseEntity<>(new Mensaje("El campo 'email' es requerido"), HttpStatus.BAD_REQUEST);
+        }
+
+        Optional<User> userOpt = userService.findByEmail(email);
         if (!userOpt.isPresent()) {
             return new ResponseEntity<>(new Mensaje("Usuario no encontrado"), HttpStatus.NOT_FOUND);
         }
@@ -118,27 +125,32 @@ public class UserController {
         User user = userOpt.get();
         // Establecer el tiempo de eliminación a 7 días desde ahora
         LocalDateTime deletionTime = LocalDateTime.now().plusDays(7);
-        user.setDeletionTime(deletionTime);
-        userService.updateDeletionTime(user, deletionTime);
+        userService.updateDeletionTime(user.getId(), deletionTime);
 
         return new ResponseEntity<>(new Mensaje("Eliminación programada con éxito"), HttpStatus.OK);
     }
 
 
     @PostMapping("/cancel-delete")
-    public ResponseEntity<?> cancelDelete(@RequestParam String username) {
-        Optional<User> userOpt = userService.findByUsername(username);
+    public ResponseEntity<?> cancelDelete(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
+
+        if (email == null || email.isEmpty()) {
+            return new ResponseEntity<>(new Mensaje("El campo 'email' es requerido"), HttpStatus.BAD_REQUEST);
+        }
+
+        Optional<User> userOpt = userService.findByEmail(email);
         if (!userOpt.isPresent()) {
             return new ResponseEntity<>(new Mensaje("Usuario no encontrado"), HttpStatus.NOT_FOUND);
         }
 
         User user = userOpt.get();
         // Cancelar la eliminación estableciendo el tiempo de eliminación a null
-        user.setDeletionTime(null);
-        userService.updateDeletionTime(user, null);
+        userService.updateDeletionTime(user.getId(), null);
 
         return new ResponseEntity<>(new Mensaje("Eliminación cancelada con éxito"), HttpStatus.OK);
     }
+
 
 
 

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -27,6 +28,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("update User set role=:role where username=:username")
     void updateUserRole(@Param("username") String username, @Param("role") Role role);
 
-
-
+    @Modifying
+    @Query("UPDATE User u SET u.deletionTime = :deletionTime WHERE u.id = :userId")
+    void updateDeletionTime(@Param("userId") Long userId, @Param("deletionTime") LocalDateTime deletionTime);
 }

@@ -192,10 +192,10 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    @Transactional
     @Override
-    public void updateDeletionTime(User user, LocalDateTime newDeletionTime) {
-        user.setDeletionTime(newDeletionTime);
-        userRepository.save(user);
+    public void updateDeletionTime(Long userId, LocalDateTime newDeletionTime) {
+        userRepository.updateDeletionTime(userId, newDeletionTime);
     }
 
 

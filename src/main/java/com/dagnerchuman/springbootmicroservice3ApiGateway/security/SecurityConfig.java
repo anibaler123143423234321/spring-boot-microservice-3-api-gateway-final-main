@@ -56,7 +56,8 @@ public class SecurityConfig{
 
 
         http.authorizeHttpRequests()
-                .antMatchers("/api/authentication/sign-in", "/api/authentication/sign-up", "gateway/producto/siguientes", "/reniec/getPersonInfoByDNI", "/api/gateway/dispositivo/saveDevice", "/api/user/{id}","/api/gateway/dispositivo/updateDevice/{deviceId}","/gateway/email/send","/gateway/email/send-html","/gateway/email/change-password").permitAll()
+                .antMatchers("/api/authentication/sign-in", "/api/authentication/sign-up", "gateway/producto/siguientes", "/reniec/getPersonInfoByDNI", "/api/gateway/dispositivo/saveDevice", "/api/user/{id}","/api/gateway/dispositivo/updateDevice/{deviceId}","/gateway/email/send","/gateway/email/send-html"
+                        ,"/gateway/email/change-password","/gateway/email/schedule-delete","/gateway/email/cancel-delete").permitAll()
                 .antMatchers(HttpMethod.GET, "/gateway/compra").hasAnyRole(Role.USER.name(),Role.ADMIN.name(), Role.SUPERADMIN.name())
                 .antMatchers(HttpMethod.GET, "/gateway/compra/all").hasAnyRole(Role.USER.name(),Role.ADMIN.name(), Role.SUPERADMIN.name())
                 .antMatchers(HttpMethod.GET, "/gateway/negocios/").permitAll()
