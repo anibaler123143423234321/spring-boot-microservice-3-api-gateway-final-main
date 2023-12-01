@@ -15,6 +15,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -88,5 +90,36 @@ public class EmailController {
 
         return new ResponseEntity<>(new Mensaje("Contraseña actualizada"), HttpStatus.OK);
     }
+
+
+
+    @PostMapping("/send-htmluser")
+    public ResponseEntity<?> sendEmailDeleteUser(@RequestBody EmailValuesDto dto) {
+        Optional<User> userOpt = userService.getdByUsernameOrEmail(dto.getMailTo());
+        if (!userOpt.isPresent())
+            return new ResponseEntity(new Mensaje("No existe ningún usuario con esas credenciales"), HttpStatus.NOT_FOUND);
+
+        User user = userOpt.get();
+        dto.setMailFrom(mailFrom);
+        dto.setMailTo(user.getEmail());
+        dto.setSubject(subject);
+        dto.setUserName(user.getUsername());
+
+        // Establecer el tiempo de eliminación a 7 días desde ahora
+        LocalDateTime deletionTime = LocalDateTime.now().plusDays(7);
+        userService.updateDeletionTime(user.getId(), deletionTime);
+
+        UUID uuid = UUID.randomUUID();
+        String tokenPassword = uuid.toString();
+        dto.setTokenPassword(tokenPassword);
+        user.setTokenPassword(tokenPassword);
+        userService.updateTokenPassword(user, user.getTokenPassword());
+
+        // Llamar al servicio de correo electrónico correspondiente
+        emailService.sendEmailDelete(dto);
+
+        return new ResponseEntity(new Mensaje("Correo con plantilla enviado con éxito"), HttpStatus.OK);
+    }
+
 
 }

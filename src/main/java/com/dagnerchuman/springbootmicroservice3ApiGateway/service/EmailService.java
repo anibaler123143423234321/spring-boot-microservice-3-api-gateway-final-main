@@ -32,6 +32,8 @@ public class EmailService {
     @Value("${mail.urlFront}")
     private String urlFront;
 
+    @Value("${delete.urlDeleteFront}")
+    private String urlDeleteFront;
     /*
     public void sendEmail() {
         try {
@@ -82,4 +84,30 @@ public class EmailService {
             e.printStackTrace();
         }
         }
+
+
+
+    public void sendEmailDelete(EmailValuesDto dto) {
+
+        MimeMessage message = javaMailSender.createMimeMessage();
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            Context context = new Context();
+            Map<String, Object> model = new HashMap<>();
+            model.put("username", dto.getUserName());
+            model.put("url",urlDeleteFront + dto.getTokenPassword());
+            context.setVariables(model);
+            String htmlText = templateEngine.process("eliminar-template",context);
+            helper.setFrom(dto.getMailFrom());
+            helper.setTo(dto.getMailTo());
+            helper.setSubject(dto.getSubject());
+            helper.setText(htmlText,true);
+            javaMailSender.send(message);
+        }catch (MessagingException e){
+            e.printStackTrace();
+        }
+    }
+
+
+
     }
