@@ -35,4 +35,9 @@ public interface DispositivoServiceRequest {
     @PutMapping("/updateDevice/{deviceId}")
     ResponseEntity<Object> updateDevice(@PathVariable int deviceId, @RequestBody Object partialDispositivo);
 
+
+    @GetMapping("/getDevice/{deviceId}")
+    Object getDeviceByDeviceId(@PathVariable("deviceId") String deviceId);
+
+
 }

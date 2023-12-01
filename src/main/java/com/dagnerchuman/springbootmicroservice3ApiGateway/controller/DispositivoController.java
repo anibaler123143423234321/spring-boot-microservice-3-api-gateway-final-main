@@ -128,6 +128,23 @@ public class DispositivoController {
         }
     }
 
+
+    @GetMapping("/getDevice/{deviceId}")
+    public ResponseEntity<Object> getDeviceByDeviceId(@PathVariable String deviceId) {
+        try {
+            // Llama al servicio de dispositivos a través de FeignClient
+            Object dispositivo = dispositivoServiceRequest.getDeviceByDeviceId(deviceId);
+
+            // Retorno de ejemplo (ajústalo según tus necesidades)
+            return new ResponseEntity<>(dispositivo, HttpStatus.OK);
+        } catch (Exception e) {
+            // Manejo de excepciones, puedes personalizar según tus necesidades
+            e.printStackTrace();
+            return new ResponseEntity<>("Error al recuperar el dispositivo.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 }
 
 
