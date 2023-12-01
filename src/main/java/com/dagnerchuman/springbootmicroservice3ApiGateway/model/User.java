@@ -73,4 +73,9 @@ public class User {
 
     @Column(name = "dispositivo", nullable = true)
     private String dispositivoId;
+
+    @Column(name = "deletion_time", nullable = true)
+    private LocalDateTime deletionTime;
+
+
 }

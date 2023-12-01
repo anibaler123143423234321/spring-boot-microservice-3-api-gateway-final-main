@@ -191,4 +191,13 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByTokenPassword(tokenPassword);
     }
 
+
+    @Override
+    public void updateDeletionTime(User user, LocalDateTime newDeletionTime) {
+        user.setDeletionTime(newDeletionTime);
+        userRepository.save(user);
+    }
+
+
+
 }

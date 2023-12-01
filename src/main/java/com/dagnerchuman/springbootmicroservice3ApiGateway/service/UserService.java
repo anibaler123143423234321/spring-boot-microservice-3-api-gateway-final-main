@@ -5,6 +5,7 @@ import com.dagnerchuman.springbootmicroservice3ApiGateway.model.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,4 +40,6 @@ public interface UserService {
     UserDetails loadUserByUsername(String nombreOrEmail) throws UsernameNotFoundException;
 
     Optional<User> getByTokenPassword(String tokenPassword);
+
+    void updateDeletionTime(User user, LocalDateTime newDeletionTime);
 }

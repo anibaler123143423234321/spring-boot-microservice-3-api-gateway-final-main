@@ -1,5 +1,6 @@
 package com.dagnerchuman.springbootmicroservice3ApiGateway.controller;
 
+import com.dagnerchuman.springbootmicroservice3ApiGateway.Dto.Mensaje;
 import com.dagnerchuman.springbootmicroservice3ApiGateway.model.Role;
 import com.dagnerchuman.springbootmicroservice3ApiGateway.model.User;
 import com.dagnerchuman.springbootmicroservice3ApiGateway.security.UserPrincipal;
@@ -10,7 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "http://api-gateway:5200") // Esto permite solicitudes desde http://localhost:5200
@@ -103,5 +106,40 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar el usuario: " + e.getMessage());
         }
     }
+
+
+    @PostMapping("/schedule-delete")
+    public ResponseEntity<?> scheduleDelete(@RequestParam String username) {
+        Optional<User> userOpt = userService.findByUsername(username);
+        if (!userOpt.isPresent()) {
+            return new ResponseEntity<>(new Mensaje("Usuario no encontrado"), HttpStatus.NOT_FOUND);
+        }
+
+        User user = userOpt.get();
+        // Establecer el tiempo de eliminación a 7 días desde ahora
+        LocalDateTime deletionTime = LocalDateTime.now().plusDays(7);
+        user.setDeletionTime(deletionTime);
+        userService.updateDeletionTime(user, deletionTime);
+
+        return new ResponseEntity<>(new Mensaje("Eliminación programada con éxito"), HttpStatus.OK);
+    }
+
+
+    @PostMapping("/cancel-delete")
+    public ResponseEntity<?> cancelDelete(@RequestParam String username) {
+        Optional<User> userOpt = userService.findByUsername(username);
+        if (!userOpt.isPresent()) {
+            return new ResponseEntity<>(new Mensaje("Usuario no encontrado"), HttpStatus.NOT_FOUND);
+        }
+
+        User user = userOpt.get();
+        // Cancelar la eliminación estableciendo el tiempo de eliminación a null
+        user.setDeletionTime(null);
+        userService.updateDeletionTime(user, null);
+
+        return new ResponseEntity<>(new Mensaje("Eliminación cancelada con éxito"), HttpStatus.OK);
+    }
+
+
 
 }
