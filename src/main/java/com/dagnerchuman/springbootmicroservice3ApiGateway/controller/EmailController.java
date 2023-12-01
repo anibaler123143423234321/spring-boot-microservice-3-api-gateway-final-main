@@ -92,7 +92,6 @@ public class EmailController {
     }
 
 
-
     @PostMapping("/send-htmluser")
     public ResponseEntity<?> sendEmailDeleteUser(@RequestBody EmailValuesDto dto) {
         Optional<User> userOpt = userService.getdByUsernameOrEmail(dto.getMailTo());
@@ -107,13 +106,16 @@ public class EmailController {
 
         // Establecer el tiempo de eliminación a 7 días desde ahora
         LocalDateTime deletionTime = LocalDateTime.now().plusDays(7);
-        userService.updateDeletionTime(user.getId(), deletionTime);
 
         UUID uuid = UUID.randomUUID();
         String tokenPassword = uuid.toString();
         dto.setTokenPassword(tokenPassword);
+
+        // Almacenar tanto el tokenPassword como el deletionTime en el usuario
         user.setTokenPassword(tokenPassword);
-        userService.updateTokenPassword(user, user.getTokenPassword());
+        user.setDeletionTime(deletionTime);
+
+        userService.updateUser(user.getId(), user);
 
         // Llamar al servicio de correo electrónico correspondiente
         emailService.sendEmailDelete(dto);
